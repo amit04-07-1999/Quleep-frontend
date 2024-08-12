@@ -23,20 +23,20 @@ const Home = () => {
     fetchUser();
   }, []);
 
-  useEffect(() => {
-    const fetchPosts = async () => {
-      try {
-        const token = localStorage.getItem('token');
-        const response = await axios.get(`${import.meta.env.VITE_BASE_URL}api/posts`, {
-          headers: { Authorization: `Bearer ${token}` }
-        });
-        const sortedPosts = response.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-        setPosts(sortedPosts);
-      } catch (error) {
-        console.error('Error fetching posts', error);
-      }
-    };
+  const fetchPosts = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await axios.get(`${import.meta.env.VITE_BASE_URL}api/posts`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      const sortedPosts = response.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+      setPosts(sortedPosts);
+    } catch (error) {
+      console.error('Error fetching posts', error);
+    }
+  };
 
+  useEffect(() => {
     fetchPosts();
   }, []);
 
@@ -56,7 +56,7 @@ const Home = () => {
       setTitle('');
       setContent('');
       setEditingPost(null);
-      window.location.reload();
+      fetchPosts();
     } catch (error) {
       console.error('Error submitting post', error);
     }
